@@ -1,0 +1,31 @@
+{
+  "name": "backendassignment",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "node dist/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KodaKodama/backendAssignment.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KodaKodama/backendAssignment/issues"
+  },
+  "homepage": "https://github.com/KodaKodama/backendAssignment#readme",
+  "dependencies": {
+    "@types/express": "^4.17.21",
+    "@types/mongoose": "^5.11.97",
+    "@types/node": "^20.12.7",
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.4"
+  }
+}
