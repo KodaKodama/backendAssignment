@@ -1,14 +1,12 @@
 import { Router } from "express";
-import { getUser } from "../controllers/user";
+import { userLogin, userRegister } from "../controllers/userController";
+
 const router = Router();
 
 // User registration
-router.post('/register', (request, response) => {
-    response.send('resigter')
-});
+router.post('/register', userRegister);
 
-// // User login
-// router.post('/login', ()=> console.log('login')
-// );
+router.post('/login', userLogin);
+
 
 module.exports = router;
