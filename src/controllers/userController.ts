@@ -4,12 +4,11 @@ const {validateName, validateEmail, validatePassword} = require('../utils/valida
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-  
 export const userRegister = async(req: Request, res: Response) => {
     try {
         const { name, email, password, isSeller } = req.body;
         const userExists = await User.findOne({ email });
-        
+
         if(userExists){
           return res.status(401).json({message: "user already exists"});
         }
@@ -76,4 +75,16 @@ export const userLogin = async (req: Request, res: Response) => {
     }
   };
   
+export const userLogout = async (req: Request, res: Response) => {
+    try {
+        res.clearCookie('t');
+        res.status(200).json({ message: "Logout successful" });
+      } catch (e) {
+        // Handle any potential errors here
+        console.error(e);
+        return res.status(500).json({
+          message: "Internal Server Error"
+        });
+      }
+};
 
