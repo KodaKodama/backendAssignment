@@ -1,11 +1,19 @@
-const express = require('express');
+import express from 'express';
 const app = express();
-
+const dotenv = require('dotenv');
+const db = require('./config/db');
+const userRouter = require('./routes/userRouter');
 const port = 1335;
-app.listen(port, (err: any) => {
-    if (err) {
-      console.error('Error starting server:', err);
-    } else {
-      console.log('app is running at', port);
-    }
-  });
+
+dotenv.config();
+db();
+//middlewares
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
+
+// routes
+app.use('/user', userRouter);
+
+app.listen(port, () => {
+      console.log('app is running at', port); 
+});
