@@ -7,7 +7,7 @@ const productRouter = require('./routes/productRouter')
 const port = 1335;
 
 dotenv.config();
-db();
+
 //middlewares
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
@@ -17,5 +17,6 @@ app.use('/user', userRouter);
 app.use('/product', productRouter);
 
 app.listen(port, () => {
+      db();
       console.log('app is running at', port); 
 });

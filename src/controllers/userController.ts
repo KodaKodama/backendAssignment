@@ -3,10 +3,12 @@ const User = require('../models/userModel');
 const {validateName, validateEmail, validatePassword} = require('../utils/validators');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+import { AuthenticatedRequest } from '../middlewares/auth';
 
 export const userRegister = async(req: Request, res: Response) => {
     try {
         const { name, email, password, isSeller } = req.body;
+        console.log(name, email)
         const userExists = await User.findOne({ email });
 
         if(userExists){
@@ -87,4 +89,46 @@ export const userLogout = async (req: Request, res: Response) => {
         });
       }
 };
+
+export const editUser = async (req: AuthenticatedRequest, res: Response) => {
+    try {
+      // Check if the user object exists on the request
+      if (!req.user) {
+        return res.status(401).json({ error: 'User not authenticated' });
+    }
+
+    // Extract the user ID from the request object
+      const id = req.user.id;
+      const {name, email, password} = req.body;
+
+      if(!validateName(name)){
+        return res.status(401).json({message: "name should be more than 5 characters"});
+      }
+
+      if(!validateEmail(email)){
+        return res.status(401).json({message: "enter a valid email address"});
+      }
+
+      if(!validatePassword(password)){
+        return res.status(401).json({message: "enter a strong password"});
+      }
+
+      // Hash the password
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const updatedUser = await User.findByIdAndUpdate(id, { name, email, password: hashedPassword });
+  
+      if (!updatedUser) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+  
+      return res.status(200).json({ message: 'User updated successfully' });
+    } catch (error: any) {
+        if (error.code === 11000 && error.keyPattern.email === 1) {
+            // Duplicate key error for email field
+            return res.status(409).json({ error: 'Email address is already in use' });
+        }
+      console.error(error);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+  };
 

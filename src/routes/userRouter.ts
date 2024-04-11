@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { userLogin, userRegister, userLogout } from "../controllers/userController";
+const {isAuthenticated} = require('../middlewares/auth');
+import { userLogin, userRegister, userLogout, editUser } from "../controllers/userController";
 
 const router = Router();
 
@@ -11,6 +12,8 @@ router.post('/login', userLogin);
 
 // User logout
 router.get('/logout', userLogout); 
+
+router.put('/edit', isAuthenticated, editUser);
 
 
 module.exports = router;

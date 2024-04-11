@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
-import jwt from 'jsonwebtoken';
+import jwt, { JsonWebTokenError } from 'jsonwebtoken';
 const User = require('../models/userModel');
 
 // Define a custom interface that extends the Request interface
-interface AuthenticatedRequest extends Request {
+export interface AuthenticatedRequest extends Request {
     user?: any; // Define the user property as optional
 }
 
@@ -32,11 +32,19 @@ const isAuthenticated = async (req: AuthenticatedRequest, res: Response, next: N
         req.user = user;
         next();
     } catch (error) {
-        console.error(error);
+    // Handle specific JWT errors
+    if (error instanceof JsonWebTokenError) {
         return res.status(401).json({
             err: "Invalid token"
         });
     }
+
+    // Handle other errors
+    console.error(error);
+    return res.status(500).json({
+        err: "Internal server error"
+    });
+}
 };
 
 const isSeller = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
