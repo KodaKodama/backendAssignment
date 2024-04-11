@@ -1,3 +1,4 @@
+const validator = require('validator');
 // Interface for user information
 interface UserInfo {
     name: string;
@@ -28,6 +29,8 @@ const validateName=(name: string)=> {
     return passwordRegex.test(password); //* checks whether the entered password matches the specified condition and returns true or false accordingly
   };
   
+
+
   /*
   //* For manually testing the validation functions
   console.log(
@@ -37,4 +40,4 @@ const validateName=(name: string)=> {
   );
   */
   
-  module.exports = { validateName, validateEmail, validatePassword };
+  module.exports = { validateName, validateEmail, validatePassword};
